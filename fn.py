@@ -8,6 +8,7 @@ from opt import opt
 from tqdm import tqdm
 import time
 import matplotlib.pyplot as plt
+plt.switch_backend('agg')
 from PIL import Image
 import numpy as np
 import math
@@ -138,6 +139,20 @@ def vis_frame_fast(frame, im_res, format='coco'):
                 start_xy = part_line[start_p]
                 end_xy = part_line[end_p]
                 cv2.line(img, start_xy, end_xy, line_color[i], 2*(kp_scores[start_p] + kp_scores[end_p]) + 1)
+        if 15 in part_line and 16 in part_line:
+            stand_px = round((part_line[15][0] + part_line[16][0])/2)
+            stand_py = round((part_line[15][1] + part_line[16][1])/2)
+            dx = part_line[15][0] - part_line[16][0]
+            dy = part_line[15][1] - part_line[16][1]
+            rad = round(( dx**2 + dy**2 )**0.5/2)
+            stand_p = ( stand_px, stand_py)
+            if abs(dx) > 0:
+                ang = math.atan(dy/dx)*180/math.pi
+                cv2.ellipse(img, stand_p, (rad, round(rad/4)), ang, 0, 360, (0, 0, 255), 2)
+                cv2.circle(img, stand_p, 1, (255, 0, 0), 1)
+
+
+
     return img
 
 
