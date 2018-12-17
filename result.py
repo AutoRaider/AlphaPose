@@ -4,6 +4,7 @@ import numpy
 import sys
 import read_json
 import fn
+import copy
 origin = os.path.dirname(os.getcwd())
 sys.path.insert(0,origin + '/tennis')
 import geometry as ge
@@ -26,37 +27,34 @@ def find_athlete(origin_data, transf_matrix, garget_width, target_height):
 
 
 if __name__ == '__main__':
-    # people_position = ge.Point(394,472)
-    target_path = "/alphapose/badminton.jpg"
-    target_img = origin + target_path
-    image = cv2.imread(target_img)
-    cv2.imshow('image',image)
-    cv2.waitKey()
-    size = image.shape # height and width
-    print('origin img size:', size)
+    # #people_position = ge.Point(394,472)
+    # target_path = "/alphapose/demo.png"
+    # target_img = origin + target_path
+    # image = cv2.imread(target_img)
+
+    # size = image.shape # height and width
+    # print('origin img size:', size)
     tennis_width = 300
     tennis_height = 400
+    scale = (tennis_width, tennis_height)
+
+    
+###################################################################################
 
     # flag = int(input("If you have the transform matrix? \nYes: press '1', No:press '2'\n"))
     # if flag == 2:
     #     cal = Calibrater(image, img_size=size[-2::-1], width=tennis_width, height=tennis_height, data_path=None)
     #     mat = cal._get_trans_matrix()
-    #     numpy.savetxt('mat_1.csv', mat, delimiter = ',')
-    
-    my_matrix = numpy.loadtxt(open("mat.csv","rb"),delimiter=",",skiprows=0) 
+    #     numpy.savetxt('mat_demo.csv', mat, delimiter = ',')
+
+###################################################################################
+
+    my_matrix = numpy.loadtxt(open("mat_demo.csv","rb"),delimiter=",",skiprows=0) 
 
 ###################################################################################
     target_json = "/alphapose/alphapose-results.json"
     path = origin + target_json
     test = read_json.read_json(path)
-
-    img_final_list = find_athlete(test, my_matrix, tennis_width, tennis_height)
-
-    img = fn.vis_frame(image,test)
-
-    cv2.imshow('img', img)
-    cv2.waitKey(0)
-
 ###########################################################
 # resize target image. Don't care this part:
     court = cv2.imread("court|.png")
@@ -65,11 +63,62 @@ if __name__ == '__main__':
     scale = (tennis_width, tennis_height)
     court = cv2.resize(court, scale)
 
+###################################################################################
+    video_path = origin + '/alphapose/badminton.mp4'
+    print('video_path:',video_path)
+    device = cv2.VideoCapture(video_path)
+    size = ((int(device.get(cv2.CAP_PROP_FRAME_WIDTH)),int(device.get(cv2.CAP_PROP_FRAME_HEIGHT))))
+    # success, frame = device.read()
+
+    fourcc = cv2.VideoWriter_fourcc(*'XVID')
+    out = cv2.VideoWriter('output.avi',fourcc, 20.0, (1920,1080))
+###################################################################################
+    success = True
+    frame_id = 0
+    print('len:::::::::::::::',len(test))
+
+    while success:
+        temp_court = copy.deepcopy(court)
+        success, frame = device.read()
+        print('success:', frame_id)
+        img_final_list = find_athlete(test[frame_id], my_matrix, tennis_width, tennis_height)
+        # frame_queue.put(frame)
+        img = fn.vis_frame(frame, test[frame_id])
+        frame_id = frame_id + 1
+        if frame_id == len(test):
+            break
+
+        for i in range( len(img_final_list) ):
+            cv2.circle(temp_court, img_final_list[i].int().tuple(), 3, (0,0,0),10)
+
+        img[size[1]-scale[1]:size[1], size[0]-scale[0]:size[0], :] = temp_court
+        out.write(img)
+        cv2.destroyAllWindows()
+
+    print('success!')
+    device.release()
+    out.release()
+    # img_final_list = find_athlete(test[150], my_matrix, tennis_width, tennis_height)
+
+    # img = fn.vis_frame(image,test[150])
+
+    # cv2.imshow('img', img)
+    # cv2.waitKey(0)
+
 ###########################################################
-    # cv2.circle(court, people_transf_position, 3, (0,0,0),10)
-    for i in range( len(img_final_list) ):
-            cv2.circle(court, img_final_list[i].int().tuple(), 3, (0,0,0),10)
-    cv2.imshow('court',court)
-    cv2.waitKey(0)
+    # # cv2.circle(court, people_transf_position, 3, (0,0,0),10)
+    # for i in range( len(img_final_list) ):
+    #         cv2.circle(court, img_final_list[i].int().tuple(), 3, (0,0,0),10)
 ###########################################################
+
+
+    # img[size[0]-scale[1]:size[0], size[1]-scale[0]:size[1], :] = court
+#     img[size[1]-scale[1]:size[1], size[0]-scale[0]:size[0], :] = court
+#     img = cv2.resize(img, (0, 0), fx=0.8, fy=0.8, interpolation=cv2.INTER_NEAREST)
+#     print(':::::::',img.shape)
+
+# ###########################################################
+#     cv2.imshow('court',img)
+#     cv2.waitKey(0)
+# ###########################################################
 

@@ -35,7 +35,7 @@ if __name__ == '__main__':
     print("read origin:", my_matrix)
 ###################################################################################
     origin = os.path.dirname(os.getcwd())
-    target_json = "/alphapose/alphapose-results.json"
+    target_json = "/alphapose/alphapose-results_t.json"
     path = origin + target_json
     test = read_json.read_json(path)
 

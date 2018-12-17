@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="71454b5d-368f-4894-b6ba-3b7440e022c6" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/sppe/.gitkeep" afterPath="$PROJECT_DIR$/models/sppe/.gitkeep" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/ssd/.gitkeep" afterPath="$PROJECT_DIR$/models/ssd/.gitkeep" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/yolo/.gitkeep" afterPath="$PROJECT_DIR$/models/yolo/.gitkeep" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fn.py" afterPath="$PROJECT_DIR$/fn.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/read_json.py" afterPath="$PROJECT_DIR$/read_json.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result.py" afterPath="$PROJECT_DIR$/result.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
