@@ -22,6 +22,7 @@ def read_json(path):
 	result = []
 	# all of the picture capture from video
 	all_result = []
+	
 	for i in range(len(data)):
 		image_id = data[i]['image_id']
 		keypoints = data[i]['keypoints']

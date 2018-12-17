@@ -27,13 +27,7 @@ def find_athlete(origin_data, transf_matrix, garget_width, target_height):
 
 
 if __name__ == '__main__':
-    # #people_position = ge.Point(394,472)
-    # target_path = "/alphapose/demo.png"
-    # target_img = origin + target_path
-    # image = cv2.imread(target_img)
 
-    # size = image.shape # height and width
-    # print('origin img size:', size)
     tennis_width = 300
     tennis_height = 400
     scale = (tennis_width, tennis_height)
@@ -68,15 +62,12 @@ if __name__ == '__main__':
     print('video_path:',video_path)
     device = cv2.VideoCapture(video_path)
     size = ((int(device.get(cv2.CAP_PROP_FRAME_WIDTH)),int(device.get(cv2.CAP_PROP_FRAME_HEIGHT))))
-    # success, frame = device.read()
 
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
     out = cv2.VideoWriter('output.avi',fourcc, 20.0, (1920,1080))
 ###################################################################################
     success = True
     frame_id = 0
-    print('len:::::::::::::::',len(test))
-
     while success:
         temp_court = copy.deepcopy(court)
         success, frame = device.read()
@@ -98,27 +89,17 @@ if __name__ == '__main__':
     print('success!')
     device.release()
     out.release()
-    # img_final_list = find_athlete(test[150], my_matrix, tennis_width, tennis_height)
 
-    # img = fn.vis_frame(image,test[150])
 
     # cv2.imshow('img', img)
     # cv2.waitKey(0)
 
-###########################################################
-    # # cv2.circle(court, people_transf_position, 3, (0,0,0),10)
-    # for i in range( len(img_final_list) ):
-    #         cv2.circle(court, img_final_list[i].int().tuple(), 3, (0,0,0),10)
 ###########################################################
 
 
     # img[size[0]-scale[1]:size[0], size[1]-scale[0]:size[1], :] = court
 #     img[size[1]-scale[1]:size[1], size[0]-scale[0]:size[0], :] = court
 #     img = cv2.resize(img, (0, 0), fx=0.8, fy=0.8, interpolation=cv2.INTER_NEAREST)
-#     print(':::::::',img.shape)
 
-# ###########################################################
-#     cv2.imshow('court',img)
-#     cv2.waitKey(0)
-# ###########################################################
+
 
