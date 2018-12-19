@@ -28,7 +28,7 @@ def find_athlete(origin_data, transf_matrix, garget_width, target_height):
 
 if __name__ == '__main__':
 
-    tennis_width = 300
+    tennis_width = 200
     tennis_height = 400
     scale = (tennis_width, tennis_height)
 
@@ -43,7 +43,8 @@ if __name__ == '__main__':
 
 ###################################################################################
 
-    my_matrix = numpy.loadtxt(open("mat_demo.csv","rb"),delimiter=",",skiprows=0) 
+    # my_matrix = numpy.loadtxt(open("mat_demo.csv","rb"),delimiter=",",skiprows=0)
+    my_matrix = numpy.loadtxt(open("mat_1.csv","rb"),delimiter=",",skiprows=0) 
 
 ###################################################################################
     target_json = "/alphapose/alphapose-results.json"
@@ -52,9 +53,11 @@ if __name__ == '__main__':
 ###########################################################
 # resize target image. Don't care this part:
     court = cv2.imread("court|.png")
+    # cv2.imshow('test',court)
+    # cv2.waitKey(0)
     # court = court[140:705, 160:390, :] # range of height and width
-    court = court[140:705, 164:387, :]
-    scale = (tennis_width, tennis_height)
+    court = court[107:740, 139:413, :]
+    # scale = (tennis_width, tennis_height)
     court = cv2.resize(court, scale)
 
 ###################################################################################
@@ -74,7 +77,7 @@ if __name__ == '__main__':
         print('success:', frame_id)
         img_final_list = find_athlete(test[frame_id], my_matrix, tennis_width, tennis_height)
         # frame_queue.put(frame)
-        img = fn.vis_frame(frame, test[frame_id])
+        img = fn.vis_frame_fast(frame, test[frame_id])
         frame_id = frame_id + 1
         if frame_id == len(test):
             break
